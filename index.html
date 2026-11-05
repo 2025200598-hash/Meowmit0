@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Meow Mito Alert!</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&family=Lilita+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="is-loading">
+
+  <div class="splash" id="splash" role="presentation">
+    <div class="splash-logo" id="splashLogo"></div>
+    <span class="splash-skip">Tap untuk skip</span>
+  </div>
+
+  <div class="site" id="site">
+
+    <header class="nav">
+      <nav class="nav-inner" aria-label="Navigasi utama">
+        <a href="#menu">Menu</a>
+        <a href="#about">About</a>
+        <a class="nav-logo" href="#top" aria-label="Meow - ke atas">
+          <!-- Ganti dengan logo kucing sebenar: <img src="assets/logo-icon.png" alt="Meow"> -->
+          <svg viewBox="0 0 64 64" aria-hidden="true">
+            <path d="M10 28 L12 6 L26 16 Q32 14 38 16 L52 6 L54 28 Q58 40 48 52 Q32 62 16 52 Q6 40 10 28Z" fill="#111"/>
+            <circle cx="24" cy="32" r="4" fill="#fff"/>
+            <circle cx="40" cy="32" r="4" fill="#fff"/>
+            <path d="M28 42 Q32 46 36 42" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          </svg>
+        </a>
+        <a href="#feedback">Feedback</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main>
+     
+      <section class="hero-band" id="top">
+        <div class="slider" id="slider" role="region" aria-roledescription="carousel" aria-label="Banner Meow">
+          <div class="slider-track">
+
+            <article class="slide slide--1" aria-label="1 daripada 3">
+              <img src="assets/hero-1.jpg" alt="Dua minuman segar diangkat ke langit biru" onerror="this.remove()" draggable="false">
+              <div class="slide-logo logo-slot"></div>
+            </article>
+
+            <article class="slide slide--2" aria-label="2 daripada 3">
+              <img src="assets/hero-2.jpg" alt="Banner Meow kedua" onerror="this.remove()" draggable="false">
+              <div class="slide-logo logo-slot"></div>
+            </article>
+
+            <article class="slide slide--3" aria-label="3 daripada 3">
+              <img src="assets/hero-3.jpg" alt="Banner Meow ketiga" onerror="this.remove()" draggable="false">
+              <div class="slide-logo logo-slot"></div>
+            </article>
+
+          </div>
+
+          <button class="slider-btn slider-btn--prev" type="button" aria-label="Banner sebelumnya">&#8249;</button>
+          <button class="slider-btn slider-btn--next" type="button" aria-label="Banner seterusnya">&#8250;</button>
+          <div class="slider-dots" role="tablist" aria-label="Pilih banner"></div>
+        </div>
+      </section>
+
+    
+      <section class="block" id="menu">
+        <h2>Menu</h2>
+        <p>Senarai minuman dan harga akan dimasukkan di sini.</p>
+      </section>
+
+      <section class="block" id="about">
+        <h2>About</h2>
+        <p>Cerita tentang Meow dan Mito akan dimasukkan di sini.</p>
+      </section>
+
+      <section class="block" id="feedback">
+        <h2>Feedback</h2>
+        <p>Ruang untuk komen dan cadangan pelanggan.</p>
+      </section>
+
+      <section class="block" id="contact">
+        <h2>Contact</h2>
+        <p>Alamat, waktu operasi dan pautan media sosial.</p>
+      </section>
+    </main>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

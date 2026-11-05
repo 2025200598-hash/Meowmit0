@@ -1,0 +1,347 @@
+
+:root {
+  
+  --cream: #fff6e4;
+  --coral: #d95a41;
+  --lime: #b5f000;
+  --blue: #4a8fe0;
+  --alert-red: #e7332b;
+  --ink: #121212;
+  --white: #ffffff;
+
+  
+  --font-display: "Lilita One", "Fredoka", system-ui, sans-serif;
+  --font-body: "Fredoka", system-ui, sans-serif;
+
+
+  --pop: 700ms;
+  --fade: 800ms;
+
+  --radius-hero: 34px;
+  --gutter: max(12px, env(safe-area-inset-left, 0px));
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.5;
+}
+
+body.is-loading { overflow: hidden; }
+
+img { max-width: 100%; display: block; }
+
+/* =========================================================
+   LOGO (wordmark CSS, dipakai kalau fail logo belum ada)
+   ========================================================= */
+.logo-img,
+.logo-video { width: 100%; height: auto; display: block; }
+
+.wordmark {
+  --wm: 72px;
+  position: relative;
+  display: inline-block;
+  font-size: var(--wm);
+  line-height: 1;
+  padding: 0.1em 0.5em 0.2em 0.1em;
+}
+
+.wordmark__main {
+  display: block;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1em;
+  letter-spacing: -0.02em;
+  color: var(--lime);
+  -webkit-text-stroke: 0.13em var(--blue);
+  paint-order: stroke fill;
+  transform: skewX(-8deg);
+}
+
+.wordmark__tag {
+  position: absolute;
+  right: 0.12em;
+  bottom: 0;
+  padding: 0.05em 0.18em 0.08em;
+  background: var(--alert-red);
+  color: var(--white);
+  border-radius: 0.1em;
+  font-family: var(--font-display);
+  font-size: 0.2em;
+  line-height: 1;
+  text-transform: uppercase;
+  text-align: center;
+  transform: rotate(-6deg);
+  box-shadow: 0 0 0 0.06em var(--white);
+}
+
+/* =========================================================
+   PAGE 1 - SPLASH
+   Urutan: logo main -> POP (zoom in, melantun) -> zoom terus + fade out
+   ========================================================= */
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: var(--cream);
+  cursor: pointer;
+  overflow: hidden;
+  transition: opacity var(--fade) ease, visibility 0s linear var(--fade);
+}
+
+.splash-logo {
+  width: min(82vw, 560px);
+  display: grid;
+  place-items: center;
+  transform: scale(1);
+  transition: transform var(--pop) cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform;
+}
+
+.splash-logo .wordmark { --wm: clamp(84px, 28vw, 190px); }
+
+.splash-skip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: max(24px, env(safe-area-inset-bottom, 0px));
+  text-align: center;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(18, 18, 18, 0.45);
+}
+
+/* langkah 1: pop */
+.splash.is-pop .splash-logo { transform: scale(1.18); }
+
+/* langkah 2: zoom menembusi + fade out */
+.splash.is-leaving {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.splash.is-leaving .splash-logo {
+  transform: scale(2);
+  transition: transform var(--fade) cubic-bezier(0.55, 0, 0.9, 0.5);
+}
+
+/* Page 2 masuk perlahan masa splash hilang */
+.site .hero-band { transform: scale(0.97); transition: transform 900ms cubic-bezier(0.2, 0.8, 0.2, 1); }
+.site.is-in .hero-band { transform: scale(1); }
+
+/* =========================================================
+   PAGE 2 - NAVIGATION
+   ========================================================= */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--coral);
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.nav-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 14px var(--gutter);
+  display: grid;
+  grid-template-columns: 1fr 1fr auto 1fr 1fr;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+}
+
+.nav-inner a {
+  color: var(--white);
+  text-decoration: none;
+  font-family: var(--font-display);
+  font-size: clamp(0.72rem, 2.6vw, 1rem);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 8px 4px;
+  transition: transform 160ms ease, color 160ms ease;
+}
+
+.nav-inner a:hover,
+.nav-inner a:focus-visible { color: var(--lime); transform: translateY(-2px); }
+
+.nav-inner a:focus-visible { outline: 2px solid var(--white); outline-offset: 2px; border-radius: 6px; }
+
+.nav-logo {
+  width: clamp(36px, 10vw, 52px);
+  margin: 0 clamp(4px, 2vw, 18px);
+  padding: 0 !important;
+}
+.nav-logo svg,
+.nav-logo img { width: 100%; height: auto; }
+.nav-logo:hover { transform: rotate(-8deg) scale(1.08) !important; }
+
+/* =========================================================
+   PAGE 2 - HERO SLIDER
+   ========================================================= */
+.hero-band {
+  background: var(--coral);
+  padding: 4px var(--gutter) 28px;
+  position: relative;
+}
+
+/* jalur kotak-kotak merah/putih di bawah band */
+.hero-band::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -8px;
+  height: 8px;
+  background: repeating-linear-gradient(90deg, var(--alert-red) 0 10px, var(--white) 10px 20px);
+}
+
+.slider {
+  position: relative;
+  max-width: 1100px;
+  margin: 0 auto;
+  border-radius: var(--radius-hero);
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  max-height: 78vh;
+  background: #8cc8f5;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.slider-track {
+  display: flex;
+  height: 100%;
+  transition: transform 650ms cubic-bezier(0.65, 0, 0.25, 1);
+  will-change: transform;
+}
+
+.slider.is-dragging .slider-track { transition: none; }
+
+.slide {
+  position: relative;
+  flex: 0 0 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.slide img:not(.logo-img) {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+/* Warna langit sementara kalau gambar belum ada */
+.slide--1 { background: linear-gradient(180deg, #6db6f2 0%, #bfe1fa 100%); }
+.slide--2 { background: linear-gradient(180deg, #ffd1a6 0%, #ffeccf 100%); }
+.slide--3 { background: linear-gradient(180deg, #c9f27a 0%, #effbc4 100%); }
+
+.slide-logo {
+  position: relative;
+  z-index: 1;
+  width: min(70%, 420px);
+  pointer-events: none;
+}
+.slide-logo .wordmark { --wm: clamp(64px, 22vw, 150px); }
+
+.slider-btn {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  margin-top: -22px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--ink);
+  font: 400 1.9rem/1 var(--font-display);
+  padding-bottom: 4px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 200ms ease, transform 160ms ease, background 160ms ease;
+}
+.slider-btn--prev { left: 14px; }
+.slider-btn--next { right: 14px; }
+.slider:hover .slider-btn,
+.slider:focus-within .slider-btn { opacity: 1; }
+.slider-btn:hover { background: var(--lime); transform: scale(1.08); }
+.slider-btn:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+
+@media (hover: none) { .slider-btn { display: none; } }
+
+.slider-dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 14px;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.slider-dots button {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.65);
+  cursor: pointer;
+  transition: width 250ms ease, background 250ms ease;
+}
+.slider-dots button[aria-selected="true"] { width: 28px; background: var(--white); }
+.slider-dots button:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+
+/* Telefon: banner lebih tinggi supaya macam hi-fi */
+@media (max-width: 600px) {
+  .slider { aspect-ratio: 4 / 4.4; border-radius: 28px; }
+}
+
+/* =========================================================
+   SECTION LAIN (placeholder)
+   ========================================================= */
+.block {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 56px max(20px, env(safe-area-inset-left, 0px));
+}
+.block:first-of-type { padding-top: 64px; }
+
+.block h2 {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.8rem, 6vw, 2.6rem);
+  color: var(--coral);
+  text-wrap: balance;
+}
+.block p { margin: 0; max-width: 60ch; }
+
+/* =========================================================
+   MOTION DIKURANGKAN
+   ========================================================= */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .splash-logo,
+  .splash.is-leaving .splash-logo { transition: none; transform: none; }
+  .splash { transition-duration: 200ms; }
+  .site .hero-band { transform: none; transition: none; }
+  .slider-track { transition-duration: 1ms; }
+}
