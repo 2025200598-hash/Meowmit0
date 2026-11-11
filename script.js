@@ -1,5 +1,3 @@
-
-
 const CONFIG = {
   // Fail logo (letak dalam folder assets/)
   logoVideo: "assets/logo-animation.mp4", // pilihan utama
@@ -224,3 +222,135 @@ function initSlider() {
 document.querySelectorAll(".logo-slot").forEach(mountStaticLogo);
 initSlider();
 runSplash();
+
+/* ---------- Page 3 + 4: Menu carousel & Ingredients ---------- */
+
+// Gambar dummy (SVG). Bila ada gambar sebenar, isi `img: "assets/xxx.png"`.
+// Icon bahan: guna emoji dulu, atau letak `img` dalam array bahan.
+const DRINKS = [
+  { name: "Sky Whisker", mix: "Blue curacao syrup, sparkling water, lime", img: "",
+    c1: "#aee6ff", c2: "#2f6fe0",
+    ings: [{ icon: "🍋", label: "Lime" }, { icon: "🥤", label: "Sparkling" }, { icon: "🧊", label: "Ice" }] },
+  { name: "Berry Bliss", mix: "Mixed berries syrup, sparkling water, lychee soda", img: "",
+    c1: "#f9b9cd", c2: "#3a0f3a",
+    ings: [{ icon: "🫐", label: "Mixed Berries" }, { icon: "🥤", label: "Lychee Soda" }, { icon: "🧊", label: "Ice" }] },
+  { name: "Frostbite", mix: "Fresh mint, lime, sparkling water", img: "",
+    c1: "#e3fbd4", c2: "#6cc24a",
+    ings: [{ icon: "🌿", label: "Mint" }, { icon: "🍋", label: "Lime" }, { icon: "🧊", label: "Ice" }] }
+];
+
+function dummyCup(c1, c2) {
+  const svg =
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 320">' +
+    '<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="' + c1 + '"/><stop offset="1" stop-color="' + c2 + '"/></linearGradient></defs>' +
+    '<rect x="116" y="0" width="9" height="90" rx="4" fill="#fff" opacity=".9" transform="rotate(12 120 40)"/>' +
+    '<path d="M28 62 L172 62 L156 300 Q100 316 44 300Z" fill="#fff" opacity=".35" stroke="#fff" stroke-width="3"/>' +
+    '<path d="M36 110 L164 110 L154 296 Q100 310 46 296Z" fill="url(#g)"/>' +
+    '<rect x="62" y="124" width="34" height="34" rx="7" fill="#fff" opacity=".45" transform="rotate(-12 79 141)"/>' +
+    '<rect x="104" y="150" width="30" height="30" rx="7" fill="#fff" opacity=".4" transform="rotate(14 119 165)"/>' +
+    '<rect x="20" y="48" width="160" height="20" rx="10" fill="#fff" opacity=".8"/></svg>';
+  return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+}
+const drinkImg = (d) => d.img || dummyCup(d.c1, d.c2);
+
+function initMenu() {
+  const wrap = document.getElementById("menuCards");
+  const cup = document.getElementById("ingCup");
+  const itemsWrap = document.getElementById("ingItems");
+  if (!wrap || !cup || !itemsWrap) return;
+
+  const n = DRINKS.length;
+  let index = 1; // mula dengan Berry Bliss di tengah
+
+  const cards = DRINKS.map((d, i) => {
+    const card = document.createElement("article");
+    card.className = "menu-card";
+    card.innerHTML = '<img alt="" draggable="false"><h3></h3><small></small>';
+    const img = card.querySelector("img");
+    img.src = drinkImg(d);
+    img.onerror = () => { img.onerror = null; img.src = dummyCup(d.c1, d.c2); };
+    card.querySelector("h3").textContent = d.name;
+    card.querySelector("small").textContent = "[ " + d.mix + " ]";
+    card.addEventListener("click", () => { if (i !== index) goTo(i); });
+    wrap.appendChild(card);
+    return card;
+  });
+
+  function layout() {
+    cards.forEach((card, i) => {
+      const d = (i - index + n) % n;
+      card.classList.toggle("is-active", d === 0);
+      card.classList.toggle("is-next", d === 1);
+      card.classList.toggle("is-prev", d === n - 1 && n > 2 || (n === 2 && d === 1));
+      card.setAttribute("aria-hidden", String(d !== 0));
+    });
+  }
+
+  let swapTimer;
+  function renderIngredients(first) {
+    const d = DRINKS[index];
+    const build = () => {
+      cup.src = drinkImg(d);
+      cup.alt = d.name;
+      cup.onerror = () => { cup.onerror = null; cup.src = dummyCup(d.c1, d.c2); };
+      itemsWrap.innerHTML = "";
+      d.ings.slice(0, 3).forEach((ing, k) => {
+        const el = document.createElement("div");
+        el.className = "ing-item slot-" + (k + 1);
+        const icon = ing.img ? '<img src="' + ing.img + '" alt="">' : ing.icon;
+        el.innerHTML = '<span class="ing-icon">' + icon + '<em></em></span><span class="ing-line"></span>';
+        el.querySelector("em").textContent = ing.label;
+        el.style.animationDelay = k * 120 + "ms";
+        itemsWrap.appendChild(el);
+      });
+      cup.classList.remove("is-out");
+    };
+    if (first) return build();
+    clearTimeout(swapTimer);
+    cup.classList.add("is-out");
+    itemsWrap.querySelectorAll(".ing-item").forEach((el) => el.classList.add("is-out"));
+    swapTimer = setTimeout(build, 280);
+  }
+
+  function goTo(i) {
+    index = (i + n) % n;
+    layout();
+    renderIngredients(false);
+  }
+
+  document.querySelector(".menu-arrow--prev").addEventListener("click", () => goTo(index - 1));
+  document.querySelector(".menu-arrow--next").addEventListener("click", () => goTo(index + 1));
+
+  // Swipe pada telefon
+  let sx = null;
+  wrap.addEventListener("pointerdown", (e) => { sx = e.clientX; });
+  wrap.addEventListener("pointerup", (e) => {
+    if (sx === null) return;
+    const dx = e.clientX - sx; sx = null;
+    if (dx < -40) goTo(index + 1); else if (dx > 40) goTo(index - 1);
+  });
+  wrap.style.touchAction = "pan-y";
+
+  layout();
+  renderIngredients(true);
+}
+
+/* ---------- Page 5: About (reveal bila scroll) ---------- */
+
+function initAbout() {
+  const img = document.getElementById("aboutImg");
+  if (img) { // gambar dummy; tukar src kepada gambar sebenar nanti
+    const d = DRINKS[1];
+    img.src = "assets/about.jpg";
+    img.onerror = () => { img.onerror = null; img.src = dummyCup("#a5b8ff", "#6a2fc0"); img.style.objectFit = "contain"; };
+  }
+  const els = document.querySelectorAll("[data-reveal]");
+  if (!("IntersectionObserver" in window)) { els.forEach((e) => e.classList.add("is-visible")); return; }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((en) => { if (en.isIntersecting) { en.target.classList.add("is-visible"); io.unobserve(en.target); } });
+  }, { threshold: 0.25 });
+  els.forEach((e) => io.observe(e));
+}
+
+initMenu();
+initAbout();

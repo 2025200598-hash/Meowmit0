@@ -66,14 +66,34 @@
       </section>
 
     
-      <section class="block" id="menu">
-        <h2>Menu</h2>
-        <p>Senarai minuman dan harga akan dimasukkan di sini.</p>
+      <section class="menu" id="menu">
+        <h2 class="sec-title">Menu</h2>
+        <div class="menu-stage">
+          <button class="menu-arrow menu-arrow--prev" type="button" aria-label="Air sebelumnya">&#8249;</button>
+          <div class="menu-cards" id="menuCards" aria-live="polite"></div>
+          <button class="menu-arrow menu-arrow--next" type="button" aria-label="Air seterusnya">&#8250;</button>
+        </div>
       </section>
 
-      <section class="block" id="about">
-        <h2>About</h2>
-        <p>Cerita tentang Meow dan Mito akan dimasukkan di sini.</p>
+      <section class="ingredients" id="ingredients" aria-label="Ingredients">
+        <div class="ing-stage" id="ingStage">
+          <img class="ing-cup" id="ingCup" alt="" draggable="false">
+          <div class="ing-items" id="ingItems"></div>
+        </div>
+      </section>
+
+      <section class="about" id="about">
+        <div class="about-media" data-reveal="pop">
+          <div class="about-blob" id="aboutBlob">
+            <img id="aboutImg" alt="Minuman Meowmito" draggable="false">
+          </div>
+          <i class="bubble b1"></i><i class="bubble b2"></i><i class="bubble b3"></i>
+        </div>
+        <div class="about-text">
+          <h2 class="about-title" data-reveal="right">About Meowmito</h2>
+          <p data-reveal="right" style="--d:200ms">MeowMito offers refreshing mojito-like drinks that brings burst of freshness to every sip. MeowMito were made for those who love refreshing and flavourful drinks.</p>
+          <p data-reveal="right" style="--d:400ms">With a sky-themed and cat-inspired concept, we drew inspiration from fluffy clouds and the cuteness of cats, adding a touch of creativity and fun to our design.</p>
+        </div>
       </section>
 
       <section class="block" id="feedback">
