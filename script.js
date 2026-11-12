@@ -228,13 +228,13 @@ runSplash();
 // Gambar dummy (SVG). Bila ada gambar sebenar, isi `img: "assets/xxx.png"`.
 // Icon bahan: guna emoji dulu, atau letak `img` dalam array bahan.
 const DRINKS = [
-  { name: "Sky Whisker", mix: "Blue curacao syrup, sparkling water, lime", img: "",
+  { name: "Sky Whisker", mix: "Blue curacao syrup, sparkling water, lime", img src: "IMG/SKYWHISKERS.png",
     c1: "#aee6ff", c2: "#2f6fe0",
     ings: [{ icon: "🍋", label: "Lime" }, { icon: "🥤", label: "Sparkling" }, { icon: "🧊", label: "Ice" }] },
-  { name: "Berry Bliss", mix: "Mixed berries syrup, sparkling water, lychee soda", img: "",
+  { name: "Berry Bliss", mix: "Mixed berries syrup, sparkling water, lychee soda", img: "IMG/BERRYBLISS.png",
     c1: "#f9b9cd", c2: "#3a0f3a",
     ings: [{ icon: "🫐", label: "Mixed Berries" }, { icon: "🥤", label: "Lychee Soda" }, { icon: "🧊", label: "Ice" }] },
-  { name: "Frostbite", mix: "Fresh mint, lime, sparkling water", img: "",
+  { name: "Frostbite", mix: "Fresh mint, lime, sparkling water", img: "IMG/FROSTBITES.png",
     c1: "#e3fbd4", c2: "#6cc24a",
     ings: [{ icon: "🌿", label: "Mint" }, { icon: "🍋", label: "Lime" }, { icon: "🧊", label: "Ice" }] }
 ];
