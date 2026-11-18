@@ -230,13 +230,13 @@ runSplash();
 const DRINKS = [
   { name: "Sky Whisker", mix: "Blue curacao syrup, sparkling water, lime", img: "IMG/SKYWHISKERS.png",
     c1: "#aee6ff", c2: "#2f6fe0",
-    ings: [{ icon: "🍋", label: "Lime" }, { icon: "🥤", label: "Sparkling" }, { icon: "🧊", label: "Ice" }] },
+    ings: [{ icon: "??", label: "Lime" }, { icon: "??", label: "Sparkling" }, { icon: "??", label: "Ice" }] },
   { name: "Berry Bliss", mix: "Mixed berries syrup, sparkling water, lychee soda", img: "IMG/BERRYBLISS.png",
     c1: "#f9b9cd", c2: "#3a0f3a",
-    ings: [{ icon: "🫐", label: "Mixed Berries" }, { icon: "🥤", label: "Lychee Soda" }, { icon: "🧊", label: "Ice" }] },
+    ings: [{ icon: "??", label: "Mixed Berries" }, { icon: "??", label: "Lychee Soda" }, { icon: "??", label: "Ice" }] },
   { name: "Frostbite", mix: "Fresh mint, lime, sparkling water", img: "IMG/FROSTBITES.png",
     c1: "#e3fbd4", c2: "#6cc24a",
-    ings: [{ icon: "🌿", label: "Mint" }, { icon: "🍋", label: "Lime" }, { icon: "🧊", label: "Ice" }] }
+    ings: [{ icon: "??", label: "Mint" }, { icon: "??", label: "Lime" }, { icon: "??", label: "Ice" }] }
 ];
 
 function dummyCup(c1, c2) {
@@ -354,3 +354,173 @@ function initAbout() {
 
 initMenu();
 initAbout();
+/* =========================================================
+   PAGE 6-8: Lokasi, Feedback (WhatsApp), Footer
+   ========================================================= */
+
+function onVisible(el, cb, threshold) {
+  if (!el) return;
+  if (!("IntersectionObserver" in window)) { cb(); return; }
+  const io = new IntersectionObserver((entries) => {
+    if (entries.some((e) => e.isIntersecting)) { io.disconnect(); cb(); }
+  }, { threshold: threshold || 0.3 });
+  io.observe(el);
+}
+
+// Pecah teks kepada huruf supaya boleh melantun masuk satu-satu.
+function splitLetters(el) {
+  const text = el.textContent.trim();
+  el.textContent = "";
+  el.classList.add("split");
+  const sr = document.createElement("span");
+  sr.className = "sr-only";
+  sr.textContent = text;
+  el.appendChild(sr);
+  let i = 0;
+  text.split(" ").forEach((word, w, arr) => {
+    const wordEl = document.createElement("span");
+    wordEl.className = "word";
+    wordEl.setAttribute("aria-hidden", "true");
+    Array.from(word).forEach((ch) => {
+      const c = document.createElement("span");
+      c.className = "ch";
+      c.textContent = ch;
+      c.style.setProperty("--i", i++);
+      wordEl.appendChild(c);
+    });
+    el.appendChild(wordEl);
+    if (w < arr.length - 1) el.appendChild(document.createTextNode(" "));
+  });
+}
+
+/* ----- Lokasi ----- */
+function initVisit() {
+  const title = document.getElementById("visitTitle");
+  const inner = document.querySelector(".visit-inner");
+  if (!title || !inner) return;
+  splitLetters(title);
+  onVisible(inner, () => { title.classList.add("is-visible"); inner.classList.add("is-visible"); }, 0.2);
+}
+
+/* ----- Chat WhatsApp: "typing..." -> mesej masuk -> balas -> tick biru ----- */
+function stopChat(slide) {
+  const chat = slide.querySelector(".wa");
+  if (chat && chat._timers) chat._timers.forEach(clearTimeout);
+}
+
+function playChat(slide, instant) {
+  const chat = slide.querySelector(".wa");
+  const typing = chat.querySelector(".wa-typing");
+  const msgs = Array.from(chat.querySelectorAll(".wa-msg"));
+  stopChat(slide);
+  chat._timers = [];
+  msgs.forEach((m) => m.classList.remove("is-shown"));
+  chat.classList.remove("is-read");
+  typing.classList.remove("is-on");
+
+  if (instant) {
+    msgs.forEach((m) => m.classList.add("is-shown"));
+    chat.classList.add("is-read");
+    return 0;
+  }
+
+  const at = (ms, fn) => chat._timers.push(setTimeout(fn, ms));
+  let t = 500;
+  msgs.forEach((m) => {
+    if (m.classList.contains("wa-in")) {
+      const first = m === msgs[0];
+      if (first) { at(t, () => typing.classList.add("is-on")); t += 1000; }
+      at(t, () => { typing.classList.remove("is-on"); m.classList.add("is-shown"); });
+      t += first ? 700 : 600;
+    } else {
+      t += 500;
+      at(t, () => m.classList.add("is-shown"));
+      t += 500;
+    }
+  });
+  at(t, () => chat.classList.add("is-read"));
+  return t;
+}
+
+/* ----- Feedback ----- */
+function initFeedback() {
+  const root = document.getElementById("fbSlider");
+  const card = document.querySelector(".fb-card");
+  if (!root || !card) return;
+
+  const titleBox = card.querySelector(".fb-title");
+  splitLetters(titleBox.querySelector(".fb-title__text"));
+  onVisible(titleBox, () => titleBox.classList.add("is-visible"), 0.6);
+
+  const slides = Array.from(root.querySelectorAll(".fb-slide"));
+  const dotsWrap = card.querySelector(".fb-dots");
+  let index = 0, timer = null, started = false, hovering = false;
+
+  const dots = slides.map((_, i) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.setAttribute("role", "tab");
+    b.setAttribute("aria-label", "Testimoni " + (i + 1));
+    b.addEventListener("click", () => { started = true; goTo(i); });
+    dotsWrap.appendChild(b);
+    return b;
+  });
+
+  function schedule(ms) {
+    clearTimeout(timer);
+    if (prefersReducedMotion || hovering) return;
+    timer = setTimeout(() => goTo(index + 1), ms);
+  }
+
+  function goTo(i) {
+    index = (i + slides.length) % slides.length;
+    slides.forEach((s, k) => {
+      const on = k === index;
+      s.classList.toggle("is-active", on);
+      s.setAttribute("aria-hidden", String(!on));
+      if (!on) stopChat(s);
+    });
+    dots.forEach((d, k) => d.setAttribute("aria-selected", String(k === index)));
+    const total = playChat(slides[index], prefersReducedMotion);
+    schedule(total + 4500);
+  }
+
+  slides.forEach((s, k) => s.setAttribute("aria-hidden", String(k !== 0)));
+  dots.forEach((d, k) => d.setAttribute("aria-selected", String(k === 0)));
+  slides[0].classList.add("is-active");
+
+  // mula main chat bila seksyen nampak di skrin
+  onVisible(root, () => { started = true; goTo(0); }, 0.35);
+
+  root.addEventListener("mouseenter", () => { hovering = true; clearTimeout(timer); });
+  root.addEventListener("mouseleave", () => { hovering = false; if (started) schedule(3000); });
+
+  // Galeri polaroid: gandakan isi supaya gelung tak nampak putus
+  const track = document.getElementById("fbTrack");
+  if (track && !prefersReducedMotion) {
+    Array.from(track.children).forEach((n) => {
+      const c = n.cloneNode(true);
+      c.setAttribute("aria-hidden", "true");
+      c.querySelectorAll("img").forEach((im) => { im.alt = ""; });
+      track.appendChild(c);
+    });
+  }
+}
+
+/* ----- Footer + butang WhatsApp terapung ----- */
+function initFooter() {
+  const fab = document.querySelector(".wa-fab");
+  if (!fab) return;
+  let tipShown = false;
+  const update = () => {
+    const on = window.scrollY > window.innerHeight * 0.6;
+    fab.classList.toggle("is-on", on);
+    if (on && !tipShown) { tipShown = true; fab.classList.add("show-tip"); }
+  };
+  window.addEventListener("scroll", update, { passive: true });
+  update();
+}
+
+initVisit();
+initFeedback();
+initFooter();

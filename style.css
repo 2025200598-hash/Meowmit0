@@ -489,3 +489,262 @@ img { max-width: 100%; display: block; }
   .menu-card, .menu-card img, .ing-cup, .ing-icon, .about-blob, .about-blob img, .bubble { animation: none !important; }
   [data-reveal] { opacity: 1; transform: none; transition: none; }
 }
+/* =========================================================
+   PAGE 6-8 : LOKASI, FEEDBACK, FOOTER
+   ========================================================= */
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* variasi reveal tambahan */
+[data-reveal="rise"] { transform: translateY(48px) scale(.94); }
+[data-reveal="left"] { transform: translateX(-60px); }
+
+/* huruf melantun masuk satu-satu */
+.split .word { display: inline-block; white-space: nowrap; }
+.split .ch {
+  display: inline-block; opacity: 0;
+  transform: translateY(.7em) rotate(-10deg) scale(.5);
+  transition: opacity 300ms ease, transform 600ms cubic-bezier(.34, 1.7, .5, 1);
+  transition-delay: calc(var(--i) * 45ms);
+}
+.is-visible .split .ch, .split.is-visible .ch { opacity: 1; transform: none; }
+
+/* ---------- LOKASI ---------- */
+.visit, .feedback { position: relative; background: var(--coral); }
+.visit { padding: 48px var(--gutter) 34px; }
+.visit::before, .feedback::after {
+  content: ""; position: absolute; left: 0; right: 0; height: 8px; z-index: 2;
+  background: repeating-linear-gradient(90deg, var(--cream) 0 10px, transparent 10px 20px);
+}
+.visit::before { top: 0; }
+.feedback::after { bottom: 0; }
+
+.visit-inner { position: relative; max-width: 760px; margin: 0 auto; padding: 0 6px; }
+.visit-title {
+  margin: 0 0 46px; max-width: calc(100% - 78px);
+  font-family: var(--font-display); font-weight: 400; text-transform: uppercase;
+  font-size: clamp(1.6rem, 7.6vw, 3rem); line-height: 1.05; color: var(--white);
+  text-shadow: 0 3px 0 rgba(0, 0, 0, .12);
+}
+
+/* anak panah lukis sendiri, kemudian mengetuk ke arah peta */
+.visit-arrow {
+  position: absolute; right: 4%; top: 6px; width: clamp(46px, 12vw, 78px);
+  z-index: 3; pointer-events: none; overflow: visible;
+}
+.visit-arrow path { fill: none; stroke: var(--ink); stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; }
+.arrow-line, .arrow-head { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.visit-inner.is-visible .arrow-line { animation: drawArrow 900ms 700ms cubic-bezier(.5, 0, .2, 1) forwards; }
+.visit-inner.is-visible .arrow-head { animation: drawArrow 350ms 1500ms ease-out forwards; }
+.visit-inner.is-visible .visit-arrow { animation: arrowNudge 1.6s 2.1s ease-in-out infinite; }
+@keyframes drawArrow { to { stroke-dashoffset: 0; } }
+@keyframes arrowNudge { 0%, 100% { translate: 0 0; } 50% { translate: -4px 10px; } }
+
+.map-card {
+  position: relative; z-index: 1; overflow: hidden; border-radius: 24px; background: #e6e0d4;
+  aspect-ratio: 16 / 10; box-shadow: 0 16px 30px rgba(90, 20, 10, .35);
+}
+.map-card iframe { display: block; width: 100%; height: 100%; border: 0; }
+
+.map-btn {
+  display: flex; width: fit-content; align-items: center; gap: 8px; margin: 18px auto 0;
+  padding: 11px 22px; border-radius: 999px; background: var(--white); color: var(--coral);
+  font-family: var(--font-display); font-size: clamp(.9rem, 3.6vw, 1.1rem); text-decoration: none;
+  box-shadow: 0 5px 0 rgba(0, 0, 0, .18); position: relative;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+.map-btn::after { content: ""; position: absolute; inset: 0; border-radius: inherit; border: 3px solid var(--white); animation: ringOut 2.2s ease-out infinite; }
+.map-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 0 rgba(0, 0, 0, .18); }
+.map-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 rgba(0, 0, 0, .18); }
+.map-btn:focus-visible { outline: 3px solid var(--lime); outline-offset: 4px; }
+.map-btn__pin { display: inline-block; animation: pinDrop 2.2s ease-in-out infinite; transform-origin: 50% 100%; }
+@keyframes ringOut { 0% { transform: scale(1); opacity: .9; } 100% { transform: scale(1.35, 1.7); opacity: 0; } }
+@keyframes pinDrop { 0%, 55%, 100% { transform: translateY(0); } 65% { transform: translateY(-7px); } 75% { transform: translateY(0); } 82% { transform: translateY(-3px); } 90% { transform: translateY(0); } }
+.visit-addr { margin: 14px 0 0; text-align: center; color: var(--white); font-size: clamp(.7rem, 2.8vw, .9rem); opacity: .92; }
+
+/* ---------- FEEDBACK ---------- */
+.feedback { padding: 14px var(--gutter) 56px; }
+.fb-card {
+  --pad: 18px;
+  position: relative; max-width: 760px; margin: 0 auto; padding: 24px var(--pad) 28px;
+  background: var(--cream); border: 2px solid var(--ink); border-radius: 34px; overflow: hidden;
+}
+.fb-title {
+  display: flex; align-items: center; margin: 0 0 12px calc(var(--pad) * -1);
+  font-family: var(--font-display); font-weight: 400; text-transform: uppercase;
+  font-size: clamp(2.6rem, 15.5vw, 5.4rem); line-height: .95; letter-spacing: -.01em; color: var(--coral);
+}
+.fb-title__bar {
+  flex: 0 0 clamp(34px, 12vw, 96px); height: .62em; align-self: center; margin-top: .06em; background: var(--coral);
+  transform: scaleX(0); transform-origin: left; transition: transform 700ms cubic-bezier(.2, .8, .2, 1);
+}
+.fb-title.is-visible .fb-title__bar { transform: none; }
+.fb-lead {
+  margin: 0 auto 20px; max-width: 46ch; text-align: center; text-transform: uppercase; letter-spacing: .05em;
+  font-size: clamp(.62rem, 2.7vw, .85rem); line-height: 1.6;
+}
+
+/* slider testimoni: semua slide bertindih, yang aktif sahaja nampak */
+.fb-slider { display: grid; }
+.fb-slide {
+  grid-area: 1 / 1; display: grid; gap: 14px; justify-items: center;
+  opacity: 0; visibility: hidden; transform: translateX(30px) scale(.97);
+  transition: opacity 450ms ease, transform 550ms cubic-bezier(.2, .8, .2, 1), visibility 0s linear 450ms;
+}
+.fb-slide.is-active { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+
+.fb-person { display: flex; align-items: center; gap: 12px; width: min(100%, 330px); }
+.fb-photo {
+  position: relative; flex: 0 0 auto; width: 64px; height: 64px; border-radius: 50%; overflow: hidden;
+  border: 3px solid var(--coral); background: linear-gradient(160deg, #aee6ff, #4a8fe0);
+  display: grid; place-items: center; transform: rotate(-6deg);
+}
+.fb-photo::before { content: attr(data-initial); font-family: var(--font-display); font-size: 1.6rem; color: var(--white); }
+.fb-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.fb-slide.is-active .fb-photo { animation: photoPop 700ms cubic-bezier(.34, 1.7, .5, 1) both; }
+@keyframes photoPop { from { transform: scale(.3) rotate(-30deg); } to { transform: scale(1) rotate(-6deg); } }
+.fb-who { display: grid; line-height: 1.25; }
+.fb-who strong { font-family: var(--font-display); font-weight: 400; font-size: 1.1rem; color: var(--coral); }
+.fb-who span:not(.stars) { font-size: .72rem; color: rgba(18, 18, 18, .65); }
+.stars { display: flex; gap: 2px; color: #f3b400; font-size: 1rem; }
+.stars i { font-style: normal; display: inline-block; }
+.fb-slide.is-active .stars i { animation: starPop 500ms calc(var(--k) * 90ms + 250ms) both cubic-bezier(.34, 1.8, .5, 1); }
+@keyframes starPop { from { transform: scale(0) rotate(-90deg); opacity: 0; } to { transform: none; opacity: 1; } }
+
+/* chat WhatsApp */
+.wa {
+  width: min(100%, 330px); border-radius: 18px; overflow: hidden; background: #efe7dc;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, .22);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; font-size: .82rem; color: #111b21;
+}
+.wa-head { display: flex; align-items: center; gap: 10px; padding: 9px 12px; background: #075e54; color: #fff; }
+.wa-avatar { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: #cfe9e3; color: #075e54; font-weight: 700; }
+.wa-head b { display: block; font-size: .88rem; line-height: 1.1; }
+.wa-head small { font-size: .66rem; opacity: .8; }
+.wa-body {
+  position: relative; display: flex; flex-direction: column; gap: 6px; min-height: 190px; padding: 12px 10px 14px;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(0, 0, 0, .035) 0 2px, transparent 3px) 0 0 / 26px 26px,
+    #efe7dc;
+}
+.wa-msg {
+  position: relative; max-width: 84%; padding: 6px 9px 4px; border-radius: 9px; line-height: 1.35;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .14); opacity: 0; transform: translateY(10px) scale(.9);
+  transition: opacity 250ms ease, transform 450ms cubic-bezier(.34, 1.6, .5, 1);
+}
+.wa-in { align-self: flex-start; background: #fff; border-top-left-radius: 2px; transform-origin: left top; }
+.wa-out { align-self: flex-end; background: #d9fdd3; border-top-right-radius: 2px; transform-origin: right top; }
+.wa-msg.is-shown { opacity: 1; transform: none; }
+.wa-time { display: block; margin-top: 2px; text-align: right; font-size: .6rem; color: #667781; }
+.wa-tick { color: #8696a0; letter-spacing: -.12em; transition: color 400ms ease; }
+.wa.is-read .wa-tick { color: #53bdeb; }
+.wa-msg--photo { padding: 3px 3px 4px; }
+.wa-msg--photo .wa-time { padding-right: 6px; }
+.wa-photo {
+  position: relative; width: min(190px, 52vw); aspect-ratio: 1; border-radius: 7px; overflow: hidden;
+  display: grid; place-items: center; background: linear-gradient(160deg, #f9b9cd, #3a0f3a);
+}
+.wa-photo::before { content: attr(data-emoji); font-size: 3rem; }
+.wa-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+/* "typing..." duduk atas tempat mesej pertama, jadi tak ada layout loncat */
+.wa-typing {
+  position: absolute; top: 12px; left: 10px; display: none; gap: 4px; padding: 10px 12px;
+  background: #fff; border-radius: 9px; border-top-left-radius: 2px; box-shadow: 0 1px 1px rgba(0, 0, 0, .14);
+}
+.wa-typing.is-on { display: flex; }
+.wa-typing i { width: 6px; height: 6px; border-radius: 50%; background: #9aa5ab; animation: waDot 1s ease-in-out infinite; }
+.wa-typing i:nth-child(2) { animation-delay: .15s; } .wa-typing i:nth-child(3) { animation-delay: .3s; }
+@keyframes waDot { 0%, 60%, 100% { transform: translateY(0); opacity: .5; } 30% { transform: translateY(-4px); opacity: 1; } }
+
+.fb-dots { display: flex; justify-content: center; gap: 8px; margin-top: 16px; }
+.fb-dots button { width: 10px; height: 10px; padding: 0; border: 0; border-radius: 999px; background: rgba(217, 90, 65, .3); cursor: pointer; transition: width 250ms ease, background 250ms ease; }
+.fb-dots button[aria-selected="true"] { width: 28px; background: var(--coral); }
+.fb-dots button:focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+
+/* gambar customer: polaroid bergerak tanpa henti */
+.fb-gallery {
+  margin: 26px calc(var(--pad) * -1) 0; overflow: hidden; padding: 10px 0 6px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.fb-track { display: flex; width: max-content; animation: marquee 32s linear infinite; }
+.fb-gallery:hover .fb-track { animation-play-state: paused; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+.polaroid {
+  flex: 0 0 auto; width: clamp(98px, 28vw, 138px); margin: 0 14px 0 0; padding: 6px 6px 0;
+  background: var(--white); border-radius: 4px; box-shadow: 0 8px 16px rgba(0, 0, 0, .2);
+  transform: rotate(var(--r, 0deg)); transition: transform 300ms cubic-bezier(.34, 1.6, .5, 1);
+}
+.polaroid:hover { transform: rotate(0deg) scale(1.12) translateY(-6px); z-index: 2; }
+.ph { position: relative; aspect-ratio: 1; display: grid; place-items: center; background: var(--g); overflow: hidden; }
+.ph::before { content: attr(data-emoji); font-size: 2.4rem; }
+.ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.polaroid figcaption { padding: 6px 0 8px; text-align: center; font-family: var(--font-display); font-size: .72rem; color: var(--coral); }
+
+/* ---------- FOOTER / CONTACT ---------- */
+.foot {
+  position: relative; text-align: center; padding: 44px var(--gutter) 22px;
+  background: repeating-linear-gradient(90deg, #f6d5cd 0 14px, var(--cream) 14px 28px);
+}
+.foot::before, .foot::after {
+  content: ""; position: absolute; left: 0; right: 0; height: 8px;
+  background: repeating-linear-gradient(90deg, var(--coral) 0 10px, var(--white) 10px 20px);
+}
+.foot::before { top: 0; } .foot::after { bottom: 0; }
+
+.foot-logo { width: min(86vw, 420px); margin: 0 auto 34px; }
+.foot-logo .wordmark { --wm: clamp(70px, 24vw, 130px); }
+.foot-logo.is-visible { animation: logoWobble 6s 1.2s ease-in-out infinite; }
+@keyframes logoWobble { 0%, 84%, 100% { rotate: 0deg; } 88% { rotate: -3deg; } 92% { rotate: 3deg; } 96% { rotate: -1.5deg; } }
+
+.foot-links { list-style: none; margin: 0 auto; padding: 0; max-width: 620px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; align-items: start; }
+.foot-links a { display: grid; justify-items: center; gap: 10px; color: var(--ink); text-decoration: none; }
+.foot-links a:focus-visible { outline: 3px solid var(--blue); outline-offset: 6px; border-radius: 12px; }
+.ico {
+  width: clamp(36px, 10vw, 46px); aspect-ratio: 1; display: grid; place-items: center; border-radius: 50%;
+  background: var(--ink); color: var(--white); transition: transform 250ms cubic-bezier(.34, 1.8, .5, 1), background 200ms ease;
+}
+.ico svg { width: 52%; }
+.foot-links a:hover .ico, .foot-links a:focus-visible .ico { background: var(--coral); animation: iconWiggle 600ms ease; }
+@keyframes iconWiggle { 25% { transform: rotate(-14deg) scale(1.15); } 50% { transform: rotate(12deg) scale(1.15); } 75% { transform: rotate(-6deg) scale(1.1); } }
+.pill { padding: 2px 8px; border-radius: 6px; background: #ffe6a3; font-size: clamp(.58rem, 2.5vw, .8rem); letter-spacing: .02em; overflow-wrap: anywhere; }
+.foot-copy { margin: 38px 0 0; font-size: .75rem; color: rgba(18, 18, 18, .6); }
+
+/* ---------- BUTANG WHATSAPP TERAPUNG ---------- */
+.wa-fab {
+  position: fixed; z-index: 40; right: 14px; bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center;
+  background: #25d366; color: #fff; box-shadow: 0 8px 18px rgba(0, 0, 0, .28);
+  transform: translateY(140%) scale(.6); opacity: 0; pointer-events: none;
+  transition: transform 500ms cubic-bezier(.34, 1.7, .5, 1), opacity 300ms ease;
+}
+.wa-fab.is-on { transform: none; opacity: 1; pointer-events: auto; }
+.wa-fab svg { width: 30px; height: 30px; }
+.wa-fab::before { content: ""; position: absolute; inset: 0; border-radius: 50%; background: #25d366; z-index: -1; animation: fabRing 2.4s ease-out infinite; }
+.wa-fab.is-on svg { animation: fabShake 5s 2s ease-in-out infinite; }
+@keyframes fabRing { 0% { transform: scale(1); opacity: .6; } 100% { transform: scale(1.8); opacity: 0; } }
+@keyframes fabShake { 0%, 86%, 100% { rotate: 0deg; } 89% { rotate: -14deg; } 92% { rotate: 12deg; } 95% { rotate: -8deg; } 98% { rotate: 4deg; } }
+.wa-fab__tip {
+  position: absolute; right: 66px; top: 50%; padding: 7px 12px; border-radius: 999px; white-space: nowrap;
+  background: var(--white); color: #075e54; font: 500 .8rem/1 var(--font-body); box-shadow: 0 4px 10px rgba(0, 0, 0, .2);
+  opacity: 0; transform: translate(10px, -50%); pointer-events: none; transition: opacity 250ms ease, transform 250ms ease;
+}
+.wa-fab:hover .wa-fab__tip, .wa-fab:focus-visible .wa-fab__tip { opacity: 1; transform: translate(0, -50%); }
+.wa-fab:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+.wa-fab.show-tip .wa-fab__tip { animation: tipFlash 4s ease both; }
+@keyframes tipFlash { 0%, 100% { opacity: 0; transform: translate(10px, -50%); } 10%, 85% { opacity: 1; transform: translate(0, -50%); } }
+
+@media (min-width: 700px) {
+  .fb-card { --pad: 34px; padding-top: 34px; }
+  .fb-slider { max-width: 360px; margin: 0 auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .split .ch { opacity: 1; transform: none; transition: none; }
+  .arrow-line, .arrow-head { stroke-dashoffset: 0; animation: none !important; }
+  .visit-arrow, .map-btn::after, .map-btn__pin, .fb-track, .foot-logo, .wa-fab::before, .wa-fab svg, .wa-fab__tip,
+  .fb-slide .fb-photo, .fb-slide .stars i, .wa-typing i { animation: none !important; }
+  .fb-title__bar { transform: none; transition: none; }
+  .fb-slide, .wa-msg { transition: none; }
+  .fb-gallery { overflow-x: auto; }
+}
