@@ -236,10 +236,10 @@ const DRINKS = [
     ings: [{ icon: "??", label: "Mixed Berries" }, { icon: "??", label: "Lychee Soda" }, { icon: "??", label: "Ice" }] },
   { name: "Frostbite", mix: "Fresh mint, lime, sparkling water", img: "IMG/FROSTBITES.png",
     c1: "#e3fbd4", c2: "#6cc24a",
-    ings: [{ icon: "??", label: "Mint" }, { icon: "??", label: "Lime" }, { icon: "??", label: "Ice" }] }
+    ings: [{ icon: "??", label: "Mint" }, { icon: "??", label: "Lime" }, { icon: "??", label: "Ice" }] },
 	{ name: "Nebula", mix: "Fresh mint, lime, sparkling water", img: "IMG/NEBULA.png",
     c1: "#e3fbd4", c2: "#6cc24a",
-    ings: [{ icon: "??", label: "Mint" }, { icon: "??", label: "Lime" }, { icon: "??", label: "Ice" }] }
+    ings: [{ icon: "??", label: "Mint" }, { icon: "??", label: "Lime" }, { icon: "??", label: "Ice" }] },
 	{ name: "Moonlychee", mix: "Fresh mint, lime, sparkling water", img: "IMG/MOONLYCHEE.png",
     c1: "#e3fbd4", c2: "#6cc24a",
     ings: [{ icon: "??", label: "Mint" }, { icon: "??", label: "Lime" }, { icon: "??", label: "Ice" }] }
