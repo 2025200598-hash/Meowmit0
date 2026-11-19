@@ -2,7 +2,7 @@ const CONFIG = {
   // Fail logo (letak dalam folder assets/)
   logoVideo: "assets/logo-animation.mp4", // pilihan utama
   logoGif: "assets/logo-animation.gif",   // kalau mp4 tiada
-  logoStatic: "assets/logo.png",          // logo biasa (untuk slide / fallback)
+  logoStatic: "IMG/LOGO.png",          // logo biasa (untuk slide / fallback)
 
   gifDurationMs: 2800,   // berapa lama GIF dimainkan sebelum pop
   minSplashMs: 2200,     // masa minimum splash bila guna logo statik / wordmark
