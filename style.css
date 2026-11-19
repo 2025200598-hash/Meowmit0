@@ -358,7 +358,7 @@ img { max-width: 100%; display: block; }
 
 .menu-card {
   position: absolute; top: 50%; left: 50%;
-  width: 36%; height: 78%;
+  width: 30%; height: 78%;
   background: var(--coral); border-radius: 22px;
   display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
   padding: 0 8px 12px; color: var(--white); cursor: pointer;
@@ -369,11 +369,12 @@ img { max-width: 100%; display: block; }
 .menu-card h3 { margin: 0; position: relative; font-family: var(--font-display); font-weight: 400; font-size: clamp(.8rem, 3.4vw, 1.2rem); }
 .menu-card small { display: block; position: relative; font-size: clamp(.38rem, 1.6vw, .6rem); letter-spacing: .06em; text-transform: uppercase; max-height: 0; opacity: 0; overflow: hidden; transition: max-height 400ms ease, opacity 400ms ease; }
 
-.menu-card.is-prev, .menu-card.is-next { opacity: 1; pointer-events: auto; z-index: 1; filter: brightness(.92); }
-.menu-card.is-prev { transform: translate(-128%, -50%) scale(.86); }
-.menu-card.is-next { transform: translate(28%, -50%) scale(.86); }
+/* 5 air kelihatan serentak: --o = jarak dari air aktif (-2..2), diset oleh JS */
+.menu-card.is-near, .menu-card.is-far { opacity: 1; pointer-events: auto; }
+.menu-card.is-near { z-index: 2; filter: brightness(.94); transform: translate(calc(-50% + var(--o) * 80%), -50%) scale(.86); }
+.menu-card.is-far  { z-index: 1; filter: brightness(.84); transform: translate(calc(-50% + var(--o) * 62%), -50%) scale(.7); }
 .menu-card.is-active {
-  opacity: 1; z-index: 3; pointer-events: auto; height: 96%; width: 40%;
+  opacity: 1; z-index: 3; pointer-events: auto; height: 96%; width: 33%;
   transform: translate(-50%, -50%) scale(1.06);
   box-shadow: 0 14px 28px rgba(217, 90, 65, .38);
 }
@@ -748,3 +749,13 @@ img { max-width: 100%; display: block; }
   .fb-slide, .wa-msg { transition: none; }
   .fb-gallery { overflow-x: auto; }
 }
+/* penerangan air aktif (ganti teks dalam kad yang terlalu sempit untuk 5 kad) */
+.menu-card small { display: none; }
+.menu-mix {
+  max-width: 46ch; min-height: 3.2em; margin: 16px auto 0; padding: 0 var(--gutter);
+  color: var(--coral); font-size: clamp(.62rem, 2.6vw, .85rem); line-height: 1.55;
+  text-transform: uppercase; letter-spacing: .05em;
+}
+.menu-mix.is-in { animation: mixIn 450ms ease both; }
+@keyframes mixIn { from { opacity: 0; transform: translateY(6px); } }
+@media (prefers-reduced-motion: reduce) { .menu-mix.is-in { animation: none; } }

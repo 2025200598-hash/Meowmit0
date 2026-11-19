@@ -228,19 +228,19 @@ runSplash();
 // Gambar dummy (SVG). Bila ada gambar sebenar, isi `img: "assets/xxx.png"`.
 // Icon bahan: guna emoji dulu, atau letak `img` dalam array bahan.
 const DRINKS = [
-  { name: "Sky Whisker", mix: "Blue curacao syrup, sparkling water, lime", img: "IMG/SKYWHISKERS.png",
+  { name: "Sky Whisker", mix: "Blue lemonade syrup, ice cream soda, lemon", img: "IMG/SKYWHISKERS.png",
     c1: "#aee6ff", c2: "#2f6fe0",
     ings: [{ icon: "??", label: "Lime" }, { icon: "??", label: "Sparkling" }, { icon: "??", label: "Ice" }] },
-  { name: "Berry Bliss", mix: "Mixed berries syrup, sparkling water, lychee soda", img: "IMG/BERRYBLISS.png",
+  { name: "Berry Bliss", mix: "Mixed berry syrup, sparkling water, lychee, lemon", img: "IMG/BERRYBLISS.png",
     c1: "#f9b9cd", c2: "#3a0f3a",
     ings: [{ icon: "??", label: "Mixed Berries" }, { icon: "??", label: "Lychee Soda" }, { icon: "??", label: "Ice" }] },
   { name: "Frostbite", mix: "Fresh mint, lime, sparkling water", img: "IMG/FROSTBITES.png",
     c1: "#e3fbd4", c2: "#6cc24a",
     ings: [{ icon: "??", label: "Mint" }, { icon: "??", label: "Lime" }, { icon: "??", label: "Ice" }] },
-	{ name: "Nebula", mix: "Fresh mint, lime, sparkling water", img: "IMG/NEBULA.png",
+	{ name: "Nebula", mix: "Blue lemonade syrup, syrup rose, mixed berries syrup, sparkling water, ice cream soda, lemon", img: "IMG/NEBULA.png",
     c1: "#e3fbd4", c2: "#6cc24a",
     ings: [{ icon: "??", label: "Mint" }, { icon: "??", label: "Lime" }, { icon: "??", label: "Ice" }] },
-	{ name: "Moonlychee", mix: "Fresh mint, lime, sparkling water", img: "IMG/MOONLYCHEE.png",
+	{ name: "Moonlychee", mix: "Lychee, ice cream soda, nata de coco, lemon", img: "IMG/MOONLYCHEE.png",
     c1: "#e3fbd4", c2: "#6cc24a",
     ings: [{ icon: "??", label: "Mint" }, { icon: "??", label: "Lime" }, { icon: "??", label: "Ice" }] }
 ];
@@ -282,14 +282,27 @@ function initMenu() {
     return card;
   });
 
+  // Penerangan air aktif di bawah carousel (kad sempit bila ada 5 air)
+  const mixEl = document.createElement("p");
+  mixEl.className = "menu-mix";
+  mixEl.setAttribute("aria-live", "polite");
+  wrap.closest(".menu-stage").after(mixEl);
+
+  // Susunan kipas: air aktif di tengah, 2 di kiri dan 2 di kanan (selang-seli berpusing)
   function layout() {
     cards.forEach((card, i) => {
-      const d = (i - index + n) % n;
-      card.classList.toggle("is-active", d === 0);
-      card.classList.toggle("is-next", d === 1);
-      card.classList.toggle("is-prev", d === n - 1 && n > 2 || (n === 2 && d === 1));
-      card.setAttribute("aria-hidden", String(d !== 0));
+      let o = (i - index + n) % n;
+      if (o > n / 2) o -= n;            // offset bertanda: ..., -2, -1, 0, 1, 2, ...
+      card.style.setProperty("--o", o);
+      card.classList.toggle("is-active", o === 0);
+      card.classList.toggle("is-near", Math.abs(o) === 1);
+      card.classList.toggle("is-far", Math.abs(o) === 2);
+      card.setAttribute("aria-hidden", String(o !== 0));
     });
+    mixEl.textContent = "[ " + DRINKS[index].mix + " ]";
+    mixEl.classList.remove("is-in");
+    void mixEl.offsetWidth;
+    mixEl.classList.add("is-in");
   }
 
   let swapTimer;
