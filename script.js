@@ -237,6 +237,12 @@ const DRINKS = [
   { name: "Frostbite", mix: "Fresh mint, lime, sparkling water", img: "IMG/FROSTBITES.png",
     c1: "#e3fbd4", c2: "#6cc24a",
     ings: [{ icon: "??", label: "Mint" }, { icon: "??", label: "Lime" }, { icon: "??", label: "Ice" }] }
+	{ name: "Nebula", mix: "Fresh mint, lime, sparkling water", img: "IMG/NEBULA.png",
+    c1: "#e3fbd4", c2: "#6cc24a",
+    ings: [{ icon: "??", label: "Mint" }, { icon: "??", label: "Lime" }, { icon: "??", label: "Ice" }] }
+	{ name: "Moonlychee", mix: "Fresh mint, lime, sparkling water", img: "IMG/MOONLYCHEE.png",
+    c1: "#e3fbd4", c2: "#6cc24a",
+    ings: [{ icon: "??", label: "Mint" }, { icon: "??", label: "Lime" }, { icon: "??", label: "Ice" }] }
 ];
 
 function dummyCup(c1, c2) {
